@@ -152,6 +152,7 @@ def pregunta_05():
                 letters[col[0]] = [int(col[1]), int(col[1])]
 
     letters = sorted(letters.items(), key=lambda x: x[0])
+    letters = [(letter, max, min) for letter, (max, min) in letters]
 
     return letters
 

@@ -1,17 +1,18 @@
-# From 'data.csv' (separated by tabs), generate a dictionary containing:
-# Column 1 as key
-# As value the sum of the values ​​in column 5 (which is a string that simulates a)
-
 with open('data.csv', 'r') as data:
     letters = {}
     for row in data:
         col = row.split('\t')
-        letter = col[0]
-        for item in col[4].split(','):
-            value = item.split(':')[1]
-            if letter in letters:
-                letters[letter] += int(value)
-            else:
-                letters[letter] = int(value)
+        if col[0] in letters:
+            letters[col[0]] = [
+                max(letters[col[0]][0], int(col[1])),
+                min(letters[col[0]][1], int(col[1]))
+            ]
+        else:
+            letters[col[0]] = [int(col[1]), int(col[1])]
 
-print(dict(sorted(letters.items())))
+letters = sorted(letters.items(), key=lambda x: x[0])
+
+# Transform letters into a tuple
+letters = [(letter, max, min) for letter, (max, min) in letters]
+
+print(letters)
