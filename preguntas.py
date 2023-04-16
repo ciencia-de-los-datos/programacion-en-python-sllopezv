@@ -21,7 +21,13 @@ def pregunta_01():
     214
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        total = 0
+        for row in data:
+            col = row.split('\t')
+            total += int(col[1])
+    
+    return total
 
 
 def pregunta_02():
