@@ -21,7 +21,13 @@ def pregunta_01():
     214
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        total = 0
+        for row in data:
+            col = row.split('\t')
+            total += int(col[1])
+
+    return total
 
 
 def pregunta_02():
@@ -39,7 +45,17 @@ def pregunta_02():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            if col[0] in letters:
+                letters[col[0]] += 1
+            else:
+                letters[col[0]] = 1
+    letters = sorted(letters.items(), key=lambda x: x[0])
+
+    return letters
 
 
 def pregunta_03():
@@ -57,7 +73,18 @@ def pregunta_03():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            if col[0] in letters:
+                letters[col[0]] += int(col[1])
+            else:
+                letters[col[0]] = int(col[1])
+
+    letters = sorted(letters.items(), key=lambda x: x[0])
+
+    return letters
 
 
 def pregunta_04():
@@ -82,7 +109,19 @@ def pregunta_04():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        months = {}
+        for row in data:
+            col = row.split('\t')
+            month = col[2].split('-')[1]
+            if month in months:
+                months[month] += 1
+            else:
+                months[month] = 1
+
+    months = sorted(months.items(), key=lambda x: x[0])
+
+    return months
 
 
 def pregunta_05():
@@ -100,7 +139,22 @@ def pregunta_05():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            if col[0] in letters:
+                letters[col[0]] = [
+                    max(letters[col[0]][0], int(col[1])),
+                    min(letters[col[0]][1], int(col[1]))
+                ]
+            else:
+                letters[col[0]] = [int(col[1]), int(col[1])]
+
+    letters = sorted(letters.items(), key=lambda x: x[0])
+    letters = [(letter, max, min) for letter, (max, min) in letters]
+
+    return letters
 
 
 def pregunta_06():
@@ -125,7 +179,22 @@ def pregunta_06():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            for key in col[4].split(','):
+                key = key.split(':')
+                if key[0] in letters:
+                    letters[key[0]].append(int(key[1]))
+                else:
+                    letters[key[0]] = [int(key[1])]
+
+        letters = sorted(letters.items(), key=lambda x: x[0])
+        for key in letters:
+            letters[letters.index(key)] = (key[0], min(key[1]), max(key[1]))
+
+    return letters
 
 
 def pregunta_07():
@@ -149,7 +218,19 @@ def pregunta_07():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = []
+        for row in data:
+            col = row.split('\t')
+            letters.append((col[0], int(col[1].strip())))
+
+        values = {}
+        for letter, value in letters:
+            values.setdefault(value, []).append(letter)
+
+        values = sorted(values.items(), key=lambda x: x[0])
+
+    return values
 
 
 def pregunta_08():
@@ -174,7 +255,23 @@ def pregunta_08():
     ]
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = []
+        for row in data:
+            col = row.split('\t')
+            letters.append((col[0], int(col[1].strip())))
+
+        values = {}
+        for letter, value in letters:
+            values.setdefault(
+                value, []).append(letter) if letter not in values.setdefault(
+                    value, []) else None
+
+        values = sorted(values.items(), key=lambda x: x[0])
+        for key in values:
+            values[values.index(key)] = (key[0], sorted(set(key[1])))
+
+    return values
 
 
 def pregunta_09():
@@ -197,7 +294,18 @@ def pregunta_09():
     }
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            for key in col[4].split(','):
+                key = key.split(':')
+                if key[0] in letters:
+                    letters[key[0]] += 1
+                else:
+                    letters[key[0]] = 1
+
+    return dict(sorted(letters.items()))
 
 
 def pregunta_10():
@@ -218,7 +326,14 @@ def pregunta_10():
 
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = []
+        for row in data:
+            col = row.split('\t')
+            letters.append(
+                (col[0], len(col[3].split(',')), len(col[4].split(','))))
+
+    return letters
 
 
 def pregunta_11():
@@ -239,7 +354,17 @@ def pregunta_11():
 
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            for letter in col[3].split(','):
+                if letter in letters:
+                    letters[letter] += int(col[1])
+                else:
+                    letters[letter] = int(col[1])
+
+    return dict(sorted(letters.items()))
 
 
 def pregunta_12():
@@ -257,4 +382,15 @@ def pregunta_12():
     }
 
     """
-    return
+    with open('data.csv', 'r') as data:
+        letters = {}
+        for row in data:
+            col = row.split('\t')
+            letter = col[0]
+            for item in col[4].split(','):
+                value = item.split(':')[1]
+                if letter in letters:
+                    letters[letter] += int(value)
+                else:
+                    letters[letter] = int(value)
+    return dict(sorted(letters.items()))
